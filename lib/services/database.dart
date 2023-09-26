@@ -47,14 +47,20 @@ class DatabaseService {
     try {
       for (var element in classes) {
         final [year, dept, sec] = element.split("-");
-        final data = await timetableCollection
+        print("$year, $dept, $sec, $currentDay, $currentInterval");
+        final snapshot = await timetableCollection
             .doc(year)
             .collection(dept)
             .doc(sec)
             .collection(currentDay)
             .doc(currentInterval)
-            .get()
-            .then((value) => value.data() as Map<String, dynamic>);
+            .get();
+
+        if (snapshot.data() == null) {
+          continue;
+        }
+
+        final data = snapshot.data() as Map<String, dynamic>;
 
         if (data["tid"] == tid) {
           final DatabaseReference realtimeDb = FirebaseDatabase.instance.ref("/$year/$dept");
