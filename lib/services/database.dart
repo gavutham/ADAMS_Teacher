@@ -42,6 +42,7 @@ class DatabaseService {
   Future openAttendance(List classes, String tid) async {
 
     final currentInterval = getCurrentInterval();
+    if(currentInterval == "") return null;
     final currentDay = getFormattedDay();
 
     try {
