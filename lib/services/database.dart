@@ -68,7 +68,7 @@ class DatabaseService {
           await realtimeDb.update({
             sec: true,
           });
-          return true;
+          return (year, dept, sec);
         }
       }
       return null;

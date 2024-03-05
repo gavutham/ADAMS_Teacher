@@ -1,6 +1,8 @@
 import "package:adams_teacher/models/teacher.dart";
 import "package:adams_teacher/services/auth.dart";
+import "package:adams_teacher/services/bluetooth.dart";
 import "package:adams_teacher/services/database.dart";
+import "package:adams_teacher/services/server.dart";
 import "package:adams_teacher/shared/loading.dart";
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
@@ -19,6 +21,26 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final teacher = Provider.of<TeacherData?>(context);
+
+    Future handleSubmit() async {
+      if (teacher != null) {
+        setState(() {
+          loading = true;
+        });
+
+
+        var class_ = await DatabaseService(tid: teacher.tid).openAttendance(teacher.classes, teacher.tid);
+
+
+        turnOn();
+        var nearby = await getDevices();
+        await postNearbyDevices(nearby, class_);
+
+        setState(() {
+          loading = false;
+        });
+      }
+    }
 
     return teacher != null ?  Scaffold(
       appBar: AppBar(
@@ -39,15 +61,7 @@ class _HomeState extends State<Home> {
               fontWeight: FontWeight.w900,
             ),),
             ElevatedButton(
-              onPressed: loading ? null : () async {
-                setState(() {
-                  loading = true;
-                });
-                await DatabaseService(tid: teacher.tid).openAttendance(teacher.classes, teacher.tid);
-                setState(() {
-                  loading = false;
-                });
-              },
+              onPressed: loading ? null : handleSubmit,
               child: const Text("Open Attendance"),
             ),
           ],
