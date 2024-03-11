@@ -28,11 +28,10 @@ class _HomeState extends State<Home> {
           loading = true;
         });
 
+        var class_ = await DatabaseService(tid: teacher.tid)
+            .openAttendance(teacher.classes, teacher.tid);
 
-        var class_ = await DatabaseService(tid: teacher.tid).openAttendance(teacher.classes, teacher.tid);
-
-
-        turnOn();
+        await turnOn();
         var nearby = await getDevices();
         await postNearbyDevices(nearby, class_);
 
@@ -42,31 +41,38 @@ class _HomeState extends State<Home> {
       }
     }
 
-    return teacher != null ?  Scaffold(
-      appBar: AppBar(
-        title: const Text("ADAMS"),
-        actions: [
-          ElevatedButton(
-            onPressed: () {_auth.signOut();},
-            child: const Text("Logout"),
-          )
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text("Welcome, ${teacher.name}", style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w900,
-            ),),
-            ElevatedButton(
-              onPressed: loading ? null : handleSubmit,
-              child: const Text("Open Attendance"),
+    return teacher != null
+        ? Scaffold(
+            appBar: AppBar(
+              title: const Text("ADAMS"),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    _auth.signOut();
+                  },
+                  child: const Text("Logout"),
+                )
+              ],
             ),
-          ],
-        ),
-      ) ,
-    ) : const Loading();
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    "Welcome, ${teacher.name}",
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: loading ? null : handleSubmit,
+                    child: const Text("Open Attendance"),
+                  ),
+                ],
+              ),
+            ),
+          )
+        : const Loading();
   }
 }
