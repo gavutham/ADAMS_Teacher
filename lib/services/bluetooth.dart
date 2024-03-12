@@ -60,7 +60,6 @@ getDevices() async {
       .where((val) => val == false)
       .first;
 
-  await Future.delayed(const Duration(seconds: 17));
 
   return ppNearby;
 }
