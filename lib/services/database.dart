@@ -64,10 +64,6 @@ class DatabaseService {
         final data = snapshot.data() as Map<String, dynamic>;
 
         if (data["tid"] == tid) {
-          final DatabaseReference realtimeDb = FirebaseDatabase.instance.ref("/$year/$dept");
-          await realtimeDb.update({
-            sec: true,
-          });
           return (year, dept, sec);
         }
       }
