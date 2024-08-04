@@ -25,6 +25,8 @@ class _HomeState extends State<Home> {
   String? sec;
   String? time;
 
+  String? ip;
+
   static const years = ["I", "II", "III", "IV"];
   static const depts = constants.departments;
   static const sections = ["A", "B", "C"];
@@ -42,6 +44,7 @@ class _HomeState extends State<Home> {
     final teacher = Provider.of<TeacherData?>(context);
 
     Future handleSubmit() async {
+      print(ip);
       if (teacher != null) {
         setState(() {
           loading = true;
@@ -102,6 +105,21 @@ class _HomeState extends State<Home> {
                   ElevatedButton(
                     onPressed: loading ? null : handleSubmit,
                     child: const Text("Open Attendance"),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.70,
+                    child: TextField(
+                      onChanged: (value) => {
+                        setState(() {
+                          ip = value;
+                        })
+                      },
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.all(10),
+                        hintText: 'Enter the IP',
+                      ),
+                    ),
                   ),
                   CupertinoSwitch(
                     value: manual,
