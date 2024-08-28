@@ -112,21 +112,21 @@ class _HomeState extends State<Home> {
                     onPressed: loading ? null : handleSubmit,
                     child: const Text("Open Attendance"),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.70,
-                    child: TextField(
-                      onChanged: (value) => {
-                        setState(() {
-                          ip = value;
-                        })
-                      },
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.all(10),
-                        hintText: 'Enter the IP',
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   width: MediaQuery.of(context).size.width * 0.70,
+                  //   child: TextField(
+                  //     onChanged: (value) => {
+                  //       setState(() {
+                  //         ip = value;
+                  //       })
+                  //     },
+                  //     decoration: const InputDecoration(
+                  //       border: OutlineInputBorder(),
+                  //       contentPadding: EdgeInsets.all(10),
+                  //       hintText: 'Enter the IP',
+                  //     ),
+                  //   ),
+                  // ),
                   CupertinoSwitch(
                     value: manual,
                     onChanged: (value) {

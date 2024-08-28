@@ -2,11 +2,11 @@ import 'dart:convert';
 // import 'dart:html';
 import 'package:http/http.dart' as http;
 
-// const baseUrl = "http://192.168.71.129:8080";
-String? baseUrl;
+const baseUrl =
+    "https://adams-server.vercel.app";
+// String? baseUrl;
 
 Future startSession(ip, year, dept, sec) async {
-  baseUrl = "$ip";
   var base = "$baseUrl/start-session";
 
   var url = "$base/$year/$dept/$sec";
@@ -32,19 +32,19 @@ Future<dynamic> getBeaconScan(String ip) async {
   print("Contacting beacon at: $ip");
   var url = "http://$ip/ble_scan";
   try {
-      var response = await http.get(Uri.parse(url)).timeout(
-        const Duration(seconds: 15),
-        onTimeout: () {
-          // Time has run out, do what you wanted to do.
-          return http.Response(
-              'Error', 408); // Request Timeout response status code
-        },
-      );
-      print("PRINTING BEACON SCAN");
-      print(response.body);
-      return jsonDecode(response.body);
-    } catch (e) {
-      print('Error. Couldn\'t reach beacon.');
+    var response = await http.get(Uri.parse(url)).timeout(
+      const Duration(seconds: 15),
+      onTimeout: () {
+        // Time has run out, do what you wanted to do.
+        return http.Response(
+            'Error', 408); // Request Timeout response status code
+      },
+    );
+    print("PRINTING BEACON SCAN");
+    print(response.body);
+    return jsonDecode(response.body);
+  } catch (e) {
+    print('Error. Couldn\'t reach beacon.');
   }
 }
 
