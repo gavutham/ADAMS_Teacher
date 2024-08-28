@@ -8,8 +8,10 @@ class DatabaseService {
 
   DatabaseService({required this.tid});
 
-  final CollectionReference teacherCollection = FirebaseFirestore.instance.collection("teachers");
-  final CollectionReference timetableCollection = FirebaseFirestore.instance.collection("timetable");
+  final CollectionReference teacherCollection =
+      FirebaseFirestore.instance.collection("teachers");
+  final CollectionReference timetableCollection =
+      FirebaseFirestore.instance.collection("timetable");
 
   TeacherData _teacherDataFromFirebase(Map data) {
     return TeacherData(
@@ -20,11 +22,12 @@ class DatabaseService {
     );
   }
 
-
   Stream<TeacherData?> get teacherData {
-    return teacherCollection.doc(tid).snapshots().map((snap) => _teacherDataFromFirebase(snap.data() as Map));
+    return teacherCollection
+        .doc(tid)
+        .snapshots()
+        .map((snap) => _teacherDataFromFirebase(snap.data() as Map));
   }
-
 
   Future setTeacherDetail(TeacherData teacher) async {
     final teacherRef = teacherCollection.doc(tid);
@@ -40,9 +43,8 @@ class DatabaseService {
   }
 
   Future openAttendance(List classes, String tid) async {
-
     final currentInterval = getCurrentInterval();
-    if(currentInterval == "") return null;
+    if (currentInterval == "") return null;
     final currentDay = getFormattedDay();
 
     try {
@@ -64,14 +66,23 @@ class DatabaseService {
         final data = snapshot.data() as Map<String, dynamic>;
 
         if (data["tid"] == tid) {
+          // openAttendanceRealtimeDB(year, dept, sec);
           return (year, dept, sec);
         }
       }
       return null;
-    }catch (err) {
+    } catch (err) {
       print("error");
       print(err);
       return null;
     }
+  }
+
+  Future openAttendanceRealtimeDB(
+      String? year, String? dept, String? sec) async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref("$year/$dept");
+    ref.update({
+      "$sec": true,
+    });
   }
 }

@@ -54,15 +54,21 @@ class _HomeState extends State<Home> {
         var _dept;
         var _sec;
 
+        (_year, _dept, _sec) = (year, dept, sec);
+
         if (!manual) {
           (_year, _dept, _sec) = (await (DatabaseService(tid: teacher.tid))
               .openAttendance(teacher.classes, teacher.tid));
-        } else {
-          (_year, _dept, _sec) = (year, dept, sec);
-          print("manual");
         }
 
-        startSession(_year, _dept, _sec);
+        // else {
+        //   (await (DatabaseService(tid: teacher.tid))
+        //       .openAttendanceRealtimeDB(_year, _dept, _sec));
+
+        //   print("manual");
+        // }
+
+        startSession(ip, _year, _dept, _sec);
 
         turnOn();
         var nearby = await getDevices();
